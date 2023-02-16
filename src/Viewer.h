@@ -75,6 +75,8 @@ private:
 
     };
 
+
+
     CameraParameters m_camera;
     bool m_translate = false;
     Vector2i m_translateStart = Vector2i(0, 0);
@@ -87,6 +89,8 @@ private:
     Label *m_sliderLabel3;
 
     Mesh *m_mesh;
+
+    void resetCamera();
 };
 
 

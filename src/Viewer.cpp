@@ -19,18 +19,11 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
     Button *resetViewButton = new Button(m_window, "Reset View");
     resetViewButton->setCallback([&]() {
 
-        // Reset translation
-        m_camera.modelTranslation.x() = 0;
+        resetCamera();
 
-        m_camera.modelTranslation.y() = 0;
 
-        m_camera.modelTranslation.z() = 0;
 
-        // Reset zoom
-        m_camera.zoom = 1.0f;
-        m_camera.viewAngle = 45.0f;
-        m_camera.dnear = 0.05f;
-        m_camera.dfar = 100.0f;
+
 
     });
 
@@ -64,21 +57,21 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
     xSlider->setValue(0.0f);
     xSlider->setCallback([this](float value) {
         m_camera.modelTranslation.x() = value;
-        m_sliderLabel->setCaption("X Translation\n----->" + std::to_string(value));
+        m_sliderLabel->setCaption("X Translation :" + std::to_string(value));
     });
 
     ySlider->setRange(std::make_pair(-10.0f, 10.0f)); //change value here for slider
     ySlider->setValue(0.0f);
     ySlider->setCallback([this](float value) {
         m_camera.modelTranslation.y() = value;
-        m_sliderLabel2->setCaption("Y Translation\n----->" + std::to_string(value));
+        m_sliderLabel2->setCaption("Y Translation :" + std::to_string(value));
     });
 
     zSlider->setRange(std::make_pair(-10.0f, 10.0f)); //change value here for slider
     zSlider->setValue(0.0f);
     zSlider->setCallback([this](float value) {
         m_camera.modelTranslation.z() = value;
-        m_sliderLabel3->setCaption("Z Translation\n----->" + std::to_string(value));
+        m_sliderLabel3->setCaption("Z Translation :" + std::to_string(value));
     });
 
 
@@ -183,6 +176,22 @@ bool Viewer::mouseMotionEvent(const Vector2i &p, const Vector2i &rel,
         }
     }
     return true;
+}
+void Viewer::resetCamera() {
+    m_camera.arcball = Arcball();
+    m_camera.zoom = 1.0f;
+    m_camera.modelZoom = .5f;
+    m_camera.modelTranslation = Eigen::Vector3f::Zero();
+    m_camera.modelTranslation_start = Eigen::Vector3f::Zero();
+    m_camera.setHorizontalFOV(45.0f);
+    m_camera.arcball.setSize(mSize);
+
+    // Reset translation
+    m_camera.modelTranslation.x() = 0;
+    m_camera.modelTranslation.y() = 0;
+    m_camera.modelTranslation.z() = 0;
+
+
 }
 
 bool Viewer::mouseButtonEvent(const Vector2i &p, int button, bool down, int modifiers) {
