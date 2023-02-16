@@ -22,9 +22,6 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
         resetCamera();
 
 
-
-
-
     });
 
 
@@ -75,19 +72,25 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
     });
 
 
-    auto clipSlider = new Slider(m_window);
-    clipSlider->setFixedWidth(100);
-    clipSlider->setValue(0.5f);
-    clipSlider->setCallback([this](float value) {
-        m_camera.dnear = 0.1f + value * 10.0f;
-        m_camera.dfar = 10.0f + value * 90.0f;
+    auto nearSlider = new Slider(m_window);
+    nearSlider->setFixedWidth(100);
+    nearSlider->setValue(0.5f);
+    auto nearLabel = new Label(m_window, "Near Clipping :"+std::to_string(nearSlider->value()), "sans-bold", 15);
+    nearSlider->setCallback([this, nearLabel](float value) {
+        m_camera.dnear = 0.1f + value * 9.9f;
+        nearLabel->setCaption(std::to_string(value));
     });
 
-    auto clipPanel = new Widget(m_window);
-    clipPanel->setLayout(new BoxLayout(Orientation::Horizontal, Alignment::Middle, 0, 10));
-    auto clipLabel = new Label(clipPanel, "Near / Far:", "sans-bold", 15);
-    clipLabel->setFixedWidth(80);
-    clipPanel->setFixedWidth(260);
+    auto farSlider = new Slider(m_window);
+    farSlider->setFixedWidth(100);
+    farSlider->setValue(0.5f);
+    auto farLabel = new Label(m_window, "Far Clipping :"+std::to_string(farSlider->value()), "sans-bold", 15);
+    farSlider->setCallback([this, farLabel](float value) {
+        m_camera.dfar = 10.0f + value * 90.0f;
+        farLabel->setCaption(std::to_string(value));
+    });
+
+
 
     performLayout();
     initShaders();
@@ -177,6 +180,7 @@ bool Viewer::mouseMotionEvent(const Vector2i &p, const Vector2i &rel,
     }
     return true;
 }
+
 void Viewer::resetCamera() {
     m_camera.arcball = Arcball();
     m_camera.zoom = 1.0f;
