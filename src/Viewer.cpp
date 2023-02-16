@@ -16,12 +16,6 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "CSC 5870 Assignm
     auto *zSlider = new Slider(m_window);
 
 
-    auto *resetViewButton = new Button(m_window, "Reset View");
-    resetViewButton->setCallback([&]() {
-        resetCamera();
-    });
-
-
     auto *b = new Button(m_window, "Open obj file ");
     b->setCallback([this]() {
         std::string filename = nanogui::file_dialog({{"obj", "Wavefront OBJ"}}, false);
@@ -35,33 +29,37 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "CSC 5870 Assignm
         }
     });
 
-    auto *horizontal = new Button(m_window, "horizontal view of the camera ");
+    auto *horizontal = new Button(m_window, "Horizontal view of the camera ");
     horizontal->setCallback([this]() {
         m_camera.setHorizontalFOV(60.0f);
 
     });
 
-    auto *vertical = new Button(m_window, "vertical view of the camera ");
+    auto *vertical = new Button(m_window, "Vertical view of the camera ");
     vertical->setCallback([this]() {
         m_camera.setVerticalFOV(45.0f);
     });
 
+    auto *resetViewButton = new Button(m_window, "Reset View");
+    resetViewButton->setCallback([&]() {
+        resetCamera();
+    });
 
-    xSlider->setRange(std::make_pair(-10.0f, 10.0f)); //change value here for slider
+    xSlider->setRange(std::make_pair(-15.0f, 15.0f)); //change value here for slider
     xSlider->setValue(0.0f);
     xSlider->setCallback([this](float value) {
         m_camera.modelTranslation.x() = value;
         m_sliderLabel->setCaption("X Translation :" + std::to_string(value));
     });
 
-    ySlider->setRange(std::make_pair(-10.0f, 10.0f)); //change value here for slider
+    ySlider->setRange(std::make_pair(-15.0f, 15.0f)); //change value here for slider
     ySlider->setValue(0.0f);
     ySlider->setCallback([this](float value) {
         m_camera.modelTranslation.y() = value;
         m_sliderLabel2->setCaption("Y Translation :" + std::to_string(value));
     });
 
-    zSlider->setRange(std::make_pair(-10.0f, 10.0f)); //change value here for slider
+    zSlider->setRange(std::make_pair(-15.0f, 15.0f)); //change value here for slider
     zSlider->setValue(0.0f);
     zSlider->setCallback([this](float value) {
         m_camera.modelTranslation.z() = value;
@@ -75,7 +73,7 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "CSC 5870 Assignm
     auto nearLabel = new Label(m_window, "Near Clipping :" + std::to_string(nearSlider->value()), "sans-bold", 15);
     nearSlider->setCallback([this, nearLabel](float value) {
         m_camera.dnear = 0.1f + value * 9.9f;
-        nearLabel->setCaption(std::to_string(value));
+        nearLabel->setCaption("Near Clipping :" + std::to_string(value));
     });
 
     auto farSlider = new Slider(m_window);
@@ -84,14 +82,14 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "CSC 5870 Assignm
     auto farLabel = new Label(m_window, "Far Clipping :" + std::to_string(farSlider->value()), "sans-bold", 15);
     farSlider->setCallback([this, farLabel](float value) {
         m_camera.dfar = 10.0f + value * 90.0f;
-        farLabel->setCaption(std::to_string(value));
+        farLabel->setCaption("Far Clipping :" + std::to_string(value));
     });
 
 
     performLayout();
     initShaders();
 
-    m_mesh = new Mesh("teapot.obj");
+    m_mesh = new Mesh("cow.obj");
     this->refresh_mesh();
     this->refresh_trackball_center();
 }

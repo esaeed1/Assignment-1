@@ -14,7 +14,7 @@ class Mesh {
   public:
   
   explicit Mesh(const std::string &filename);
-  
+
   ~Mesh();
   
   bool load_mesh(const std::string &filename);
