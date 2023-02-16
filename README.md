@@ -1,5 +1,8 @@
-# tinyobjviewer
-A TinyObjLoader using NanoGui and TinyObjLoader
+# Assignment 1
+A Obj loader/viewer using Nanogui and Tinyobjloader
+
+* https://github.com/tinyobjloader/tinyobjloader
+* https://github.com/wjakob/nanogui
 
 This code was made using this code 
 https://github.com/stephane-lb/tinyobjviewer
