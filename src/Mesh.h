@@ -21,7 +21,7 @@ class Mesh {
 
   unsigned int get_number_of_face() const;
   
-  const Eigen::Vector3f get_mesh_center();
+  Eigen::Vector3f get_mesh_center();
   
   const Eigen::MatrixXf *get_points();
   

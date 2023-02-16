@@ -3,7 +3,7 @@
 #include <nanogui/slider.h>
 
 
-Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") {
+Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "CSC 5870 Assignment 1") {
 
     m_window = new Window(this, "Controls");
     m_window->setPosition(Vector2i(15, 15));
@@ -16,20 +16,17 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
     auto *zSlider = new Slider(m_window);
 
 
-    Button *resetViewButton = new Button(m_window, "Reset View");
+    auto *resetViewButton = new Button(m_window, "Reset View");
     resetViewButton->setCallback([&]() {
-
         resetCamera();
-
-
     });
 
 
-    Button *b = new Button(m_window, "Open obj file ");
+    auto *b = new Button(m_window, "Open obj file ");
     b->setCallback([this]() {
         std::string filename = nanogui::file_dialog({{"obj", "Wavefront OBJ"}}, false);
 
-        if (filename != "") {
+        if (!filename.empty()) {
             mProcessEvents = false;
             m_mesh = new Mesh(filename);
             this->refresh_mesh();
@@ -38,13 +35,13 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
         }
     });
 
-    Button *horizontal = new Button(m_window, "horizontal view of the camera ");
+    auto *horizontal = new Button(m_window, "horizontal view of the camera ");
     horizontal->setCallback([this]() {
         m_camera.setHorizontalFOV(60.0f);
 
     });
 
-    Button *vertical = new Button(m_window, "vertical view of the camera ");
+    auto *vertical = new Button(m_window, "vertical view of the camera ");
     vertical->setCallback([this]() {
         m_camera.setVerticalFOV(45.0f);
     });

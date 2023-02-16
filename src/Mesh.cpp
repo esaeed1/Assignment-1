@@ -14,8 +14,7 @@ Mesh::Mesh(const std::string &filename): m_num_vertices(0), m_num_faces(0)
   load_mesh(filename);
 }
 
-Mesh::~Mesh() {
-}
+Mesh::~Mesh() = default;
 
 bool Mesh::load_mesh(const std::string &filename) {
   
@@ -140,7 +139,7 @@ unsigned int Mesh::get_number_of_face() const {
   return m_num_faces;
 }
 
-const Eigen::Vector3f Mesh::get_mesh_center() {
+Eigen::Vector3f Mesh::get_mesh_center() {
   return m_mesh_center;
 }
 
