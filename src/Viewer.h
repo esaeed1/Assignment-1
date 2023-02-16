@@ -35,7 +35,6 @@ public:
 
     virtual bool keyboardEvent(int key, int scancode, int action, int modifiers);
 
-    Vector2f getScreenCoord();
 
     bool scrollEvent(const Vector2i &p, const Vector2f &rel);
 
@@ -45,6 +44,8 @@ public:
 
 private:
     void initShaders();
+
+    void resetCamera();
 
     void computeCameraMatrices(Eigen::Matrix4f &model,
                                Eigen::Matrix4f &view,
@@ -75,8 +76,6 @@ private:
 
     };
 
-
-
     CameraParameters m_camera;
     bool m_translate = false;
     Vector2i m_translateStart = Vector2i(0, 0);
@@ -90,7 +89,6 @@ private:
 
     Mesh *m_mesh;
 
-    void resetCamera();
 };
 
 

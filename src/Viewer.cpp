@@ -75,7 +75,7 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
     auto nearSlider = new Slider(m_window);
     nearSlider->setFixedWidth(100);
     nearSlider->setValue(0.5f);
-    auto nearLabel = new Label(m_window, "Near Clipping :"+std::to_string(nearSlider->value()), "sans-bold", 15);
+    auto nearLabel = new Label(m_window, "Near Clipping :" + std::to_string(nearSlider->value()), "sans-bold", 15);
     nearSlider->setCallback([this, nearLabel](float value) {
         m_camera.dnear = 0.1f + value * 9.9f;
         nearLabel->setCaption(std::to_string(value));
@@ -84,12 +84,11 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "TinyObjViewer") 
     auto farSlider = new Slider(m_window);
     farSlider->setFixedWidth(100);
     farSlider->setValue(0.5f);
-    auto farLabel = new Label(m_window, "Far Clipping :"+std::to_string(farSlider->value()), "sans-bold", 15);
+    auto farLabel = new Label(m_window, "Far Clipping :" + std::to_string(farSlider->value()), "sans-bold", 15);
     farSlider->setCallback([this, farLabel](float value) {
         m_camera.dfar = 10.0f + value * 90.0f;
         farLabel->setCaption(std::to_string(value));
     });
-
 
 
     performLayout();
@@ -116,11 +115,6 @@ void Viewer::draw(NVGcontext *ctx) {
     Screen::draw(ctx);
 }
 
-Vector2f Viewer::getScreenCoord() {
-    Vector2i pos = mousePos();
-    return Vector2f(2.0f * (float) pos.x() / width() - 1.0f,
-                    1.0f - 2.0f * (float) pos.y() / height());
-}
 
 void Viewer::drawContents() {
 
@@ -195,7 +189,9 @@ void Viewer::resetCamera() {
     m_camera.modelTranslation.y() = 0;
     m_camera.modelTranslation.z() = 0;
 
-
+    // Reset clipping values to default
+    m_camera.dnear = 0.1f;
+    m_camera.dfar = 100.0f;
 }
 
 bool Viewer::mouseButtonEvent(const Vector2i &p, int button, bool down, int modifiers) {
