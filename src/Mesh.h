@@ -1,7 +1,3 @@
-//
-// Created by stephan-lb on 23/03/2017.
-//
-
 #ifndef TINYOBJVIEWER_MESH_H
 #define TINYOBJVIEWER_MESH_H
 
@@ -17,15 +13,13 @@ class Mesh {
   
   public:
   
-  Mesh(const std::string &filename);
+  explicit Mesh(const std::string &filename);
   
   ~Mesh();
   
   bool load_mesh(const std::string &filename);
-  
-  void export_mesh(const std::string &filename);
-  
-  unsigned int get_number_of_face();
+
+  unsigned int get_number_of_face() const;
   
   const Eigen::Vector3f get_mesh_center();
   
@@ -35,7 +29,7 @@ class Mesh {
   
   const Eigen::MatrixXf *get_normals();
   
-  float get_dist_max();
+  float get_dist_max() const;
   
   private:
   

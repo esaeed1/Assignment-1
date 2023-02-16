@@ -1,7 +1,3 @@
-//
-// Created by stephan-lb on 23/03/2017.
-//
-
 #include "Mesh.h"
 
 #include <iostream>
@@ -32,32 +28,31 @@ bool Mesh::load_mesh(const std::string &filename) {
     return false;
   }
   
-  if(!m_materials.empty())
-  {
+  if(!m_materials.empty()){
     std::cerr << "We are not supporting materials for the moments" << std::endl;
   }
   
-  std::cout << "[LoadOBJ] # of shapes in .obj : " << m_shapes.size() << std::endl;
-  std::cout << "[LoadOBJ] # of materials in .obj : " << m_materials.size() << std::endl;
+//  std::cout << "[LoadOBJ] # of shapes in .obj : " << m_shapes.size() << std::endl;
+//  std::cout << "[LoadOBJ] # of materials in .obj : " << m_materials.size() << std::endl;
   
   m_num_vertices = (int)(attrib.vertices.size()) / 3 ;
   
-  for (size_t i = 0; i < m_shapes.size(); i++) {
-    m_num_faces += m_shapes[i].mesh.indices.size() / 3;
+  for (auto & m_shape : m_shapes) {
+    m_num_faces += m_shape.mesh.indices.size() / 3;
   }
   
-  std::cout << "[LoadOBJ] # of faces: " << m_num_faces << std::endl;
-  std::cout << "[LoadOBJ] # of vertices: " << m_num_vertices << std::endl;
+//  std::cout << "[LoadOBJ] # of faces: " << m_num_faces << std::endl;
+//  std::cout << "[LoadOBJ] # of vertices: " << m_num_vertices << std::endl;
   
   m_points = Eigen::MatrixXf(3, m_num_vertices);
   m_indices = MatrixXu(3, m_num_faces);
   m_normals = Eigen::MatrixXf(3, m_num_vertices);
   
-  for (size_t s = 0; s < m_shapes.size(); s++) {
-    for (size_t f = 0; f < m_shapes[s].mesh.indices.size() / 3; f++) {
-      tinyobj::index_t idx0 = m_shapes[s].mesh.indices[3 * f + 0];
-      tinyobj::index_t idx1 = m_shapes[s].mesh.indices[3 * f + 1];
-      tinyobj::index_t idx2 = m_shapes[s].mesh.indices[3 * f + 2];
+  for (auto & m_shape : m_shapes) {
+    for (size_t f = 0; f < m_shape.mesh.indices.size() / 3; f++) {
+      tinyobj::index_t idx0 = m_shape.mesh.indices[3 * f + 0];
+      tinyobj::index_t idx1 = m_shape.mesh.indices[3 * f + 1];
+      tinyobj::index_t idx2 = m_shape.mesh.indices[3 * f + 2];
   
       float v[3][3];
       for (int k = 0; k < 3; k++) {
@@ -87,7 +82,7 @@ bool Mesh::load_mesh(const std::string &filename) {
       m_dist_max = std::max( (m_bmax - m_mesh_center).norm(), (m_bmax - m_mesh_center).norm() );
   
       float n[3][3];
-      if (attrib.normals.size() > 0) {
+      if (!attrib.normals.empty()) {
         int f0 = idx0.normal_index;
         int f1 = idx1.normal_index;
         int f2 = idx2.normal_index;
@@ -141,7 +136,7 @@ bool Mesh::load_mesh(const std::string &filename) {
   return true;
 }
 
-unsigned int Mesh::get_number_of_face() {
+unsigned int Mesh::get_number_of_face() const {
   return m_num_faces;
 }
 
@@ -161,7 +156,7 @@ const Eigen::MatrixXf *Mesh::get_normals() {
   return &m_normals;
 }
 
-float Mesh::get_dist_max()
+float Mesh::get_dist_max() const
 {
   return m_dist_max;
 }

@@ -5,18 +5,10 @@
 NANOGUI_FORCE_DISCRETE_GPU();
 
 int main(int argc, char* argv[]) {
-  
-//  if (argc < 2) {
-//    std::cout << "Needs input.obj\n" << std::endl;
-//    return 0;
-//  }
-  
   try {
-    nanogui::init();
-    {
+    nanogui::init();{
       nanogui::ref<Viewer> viewer = new Viewer();
       viewer->setVisible(true);
-    
       nanogui::mainloop();
     }
     
@@ -26,7 +18,6 @@ int main(int argc, char* argv[]) {
     std::cerr << error_msg << std::endl;
     return -1;
   }
-  
-  
+
   return 0;
 }
