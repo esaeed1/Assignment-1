@@ -13,7 +13,7 @@ and made modifications to allow for
 * (Change the values of the near and far clipping plane. - Slider
 * Reseting view - Button
 * Zoom in and zoom out view of the model. - Mouse
-
+* Wireframe - Button
 
 * Rotate the model / camera around X, Y, and Z axes.
 * Rotate the model /camera according to the moving direction and distance of the mouse.
