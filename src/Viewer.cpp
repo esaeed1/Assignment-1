@@ -29,6 +29,11 @@ Viewer::Viewer() : nanogui::Screen(Eigen::Vector2i(1024, 768), "CSC 5870 Assignm
         }
     });
 
+    auto *wireframeButton = new Button(m_window, "Wireframe");
+    wireframeButton->setCallback([this]() {
+        m_wireframe = !m_wireframe;
+    });
+
     auto *horizontal = new Button(m_window, "Horizontal view of the camera ");
     horizontal->setCallback([this]() {
         m_camera.setHorizontalFOV(60.0f);
@@ -114,6 +119,14 @@ void Viewer::draw(NVGcontext *ctx) {
 void Viewer::drawContents() {
 
     using namespace nanogui;
+
+    if (m_wireframe) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
 
     if (m_mesh == nullptr)
         return;

@@ -50,6 +50,8 @@ private:
                                Eigen::Matrix4f &view,
                                Eigen::Matrix4f &proj);
 
+    bool m_wireframe = false; // add this line
+
 
     struct CameraParameters {
         nanogui::Arcball arcball;
