@@ -19,11 +19,7 @@ and made modifications to allow for
 * Rotate the model /camera according to the moving direction and distance of the mouse.
 * Rotate the model around non-major axes as intuitively as possible!
 
-
-
-![image](https://user-images.githubusercontent.com/117033347/219446624-12c04cbe-f1b7-44f4-b45a-04ebca49d5cf.png)
-
-
+![Screenshot from 2023-02-21 15-10-43](https://user-images.githubusercontent.com/117033347/220448040-e394b8d1-5014-439c-b8fa-ae00f6753f6a.png)
 
 # Vedio of program running
 https://user-images.githubusercontent.com/117033347/219445646-41625e50-cbde-4300-977e-869349de0ce6.mp4
