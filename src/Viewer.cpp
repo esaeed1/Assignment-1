@@ -132,7 +132,7 @@ void Viewer::drawContents() {
         return;
 
     /* Draw the window contents using OpenGL */
-    m_phong_shader.bind();
+    m_basic_shader.bind();
 
     Eigen::Matrix4f model, view, proj;
     computeCameraMatrices(model, view, proj);
@@ -141,14 +141,14 @@ void Viewer::drawContents() {
     Matrix4f p = proj;
 
     /* MVP uniforms */
-    m_phong_shader.setUniform("MV", mv);
-    m_phong_shader.setUniform("P", p);
+    m_basic_shader.setUniform("MV", mv);
+    m_basic_shader.setUniform("P", p);
 
     // Setup OpenGL (making sure the GUI doesn't disable these
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
 
-    m_phong_shader.drawIndexed(GL_TRIANGLES, 0, m_mesh->get_number_of_face());
+    m_basic_shader.drawIndexed(GL_TRIANGLES, 0, m_mesh->get_number_of_face());
 }
 
 bool Viewer::scrollEvent(const Vector2i &p, const Vector2f &rel) {
@@ -224,8 +224,8 @@ bool Viewer::mouseButtonEvent(const Vector2i &p, int button, bool down, int modi
 
 void Viewer::initShaders() {
     // Shaders
-    m_phong_shader.init(
-            "a_simple_shader",
+    m_basic_shader.init(
+            "a_basic_shader",
 
             /* Vertex shader */
             "#version 330\n"
@@ -236,47 +236,25 @@ void Viewer::initShaders() {
             "in vec3 normal;\n"
 
             "out vec3 fcolor;\n"
-            "out vec3 fnormal;\n"
-            "out vec3 view_dir;\n"
-            "out vec3 light_dir;\n"
 
             "void main() {\n"
-            "    vec4 vpoint_mv = MV * vec4(position, 1.0);\n"
-            "    gl_Position = P * vpoint_mv;\n"
-            "    fcolor = vec3(0.7);\n"
-            "    fnormal = mat3(transpose(inverse(MV))) * normal;\n"
-            "    light_dir = vec3(0.0, 3.0, 3.0) - vpoint_mv.xyz;\n"
-            "    view_dir = -vpoint_mv.xyz;\n"
+            "    gl_Position = P * MV * vec4(position, 1.0);\n"
+            "    fcolor = vec3(0.5, 0.5, 0.5);\n"
             "}",
 
             /* Fragment shader */
             "#version 330\n"
 
             "in vec3 fcolor;\n"
-            "in vec3 fnormal;\n"
-            "in vec3 view_dir;\n"
-            "in vec3 light_dir;\n"
 
             "out vec4 color;\n"
 
             "void main() {\n"
-            "    vec3 c = vec3(0.0);\n"
-            "    c += vec3(1.0)*vec3(0.18, 0.1, 0.1);\n"
-            "    vec3 n = normalize(fnormal);\n"
-            "    vec3 v = normalize(view_dir);\n"
-            "    vec3 l = normalize(light_dir);\n"
-            "    float lambert = dot(n,l);\n"
-            "    if(lambert > 0.0) {\n"
-            "        c += vec3(lambert);\n"
-            "        vec3 v = normalize(view_dir);\n"
-            "        vec3 r = reflect(-l,n);\n"
-            "        c += vec3(pow(max(dot(r,v), 0.0), 90.0));\n"
-            "    }\n"
-            "    c *= fcolor;\n"
-            "    color = vec4(c, 1.0);\n"
+            "    color = vec4(fcolor, 1.0);\n"
             "}"
     );
 }
+
 
 void Viewer::refresh_trackball_center() {
     // Re-center the mesh
@@ -288,10 +266,10 @@ void Viewer::refresh_trackball_center() {
 }
 
 void Viewer::refresh_mesh() {
-    m_phong_shader.bind();
-    m_phong_shader.uploadIndices(*(m_mesh->get_indices()));
-    m_phong_shader.uploadAttrib("position", *(m_mesh->get_points()));
-    m_phong_shader.uploadAttrib("normal", *(m_mesh->get_normals()));
+    m_basic_shader.bind();
+    m_basic_shader.uploadIndices(*(m_mesh->get_indices()));
+    m_basic_shader.uploadAttrib("position", *(m_mesh->get_points()));
+    m_basic_shader.uploadAttrib("normal", *(m_mesh->get_normals()));
 }
 
 void Viewer::computeCameraMatrices(Eigen::Matrix4f &model,
@@ -314,6 +292,6 @@ void Viewer::computeCameraMatrices(Eigen::Matrix4f &model,
 }
 
 Viewer::~Viewer() {
-    m_phong_shader.free();
+    m_basic_shader.free();
     delete m_mesh;
 }
