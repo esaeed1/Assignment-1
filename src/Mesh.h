@@ -48,5 +48,4 @@ class Mesh {
   Eigen::MatrixXf m_normals;
 };
 
-
 #endif //TINYOBJVIEWER_MESH_H
