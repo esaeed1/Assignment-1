@@ -1,7 +1,13 @@
 # Assignment 1
 A Obj loader/viewer using Nanogui and Tinyobjloader
 
-* https://github.com/tinyobjloader/tinyobjloader
+# Tiny OBJ Loader
+*  Wavefront obj loader written in C++03. No dependency except for C++ STL.
+*  https://github.com/tinyobjloader/tinyobjloader
+
+
+# NanoGUI
+* NanoGUI builds on GLFW for cross-platform OpenGL context creation and event handling, GLAD to use OpenGL 3.x or higher Windows, Eigen for basic vector types, and NanoVG to draw 2D primitives.
 * https://github.com/wjakob/nanogui
 
 This code was made using this code 
